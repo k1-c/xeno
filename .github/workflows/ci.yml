@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        rust-version: ["1.82.0", beta]
+        rust-version: [stable, beta]
     
     steps:
     - name: 📥 Checkout code
@@ -62,7 +62,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: 🦀 Setup Rust toolchain
-      uses: dtolnay/rust-toolchain@1.82.0
+      uses: dtolnay/rust-toolchain@stable
       with:
         components: rustfmt
 
@@ -79,7 +79,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: 🦀 Setup Rust toolchain
-      uses: dtolnay/rust-toolchain@1.82.0
+      uses: dtolnay/rust-toolchain@stable
       with:
         components: clippy
 
@@ -113,7 +113,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: 🦀 Setup Rust toolchain
-      uses: dtolnay/rust-toolchain@1.82.0
+      uses: dtolnay/rust-toolchain@stable
       with:
         targets: ${{ matrix.target }}
 
@@ -153,11 +153,11 @@ jobs:
       uses: actions/checkout@v4
 
     - name: 🦀 Setup Rust toolchain
-      uses: dtolnay/rust-toolchain@1.82.0
+      uses: dtolnay/rust-toolchain@stable
 
     - name: 🔍 Install cargo-audit
       run: |
-        cargo install --locked cargo-audit || cargo install cargo-audit
+        cargo install --locked cargo-audit || cargo install cargo-audit --force
 
     - name: 🔍 Run security audit
       run: cargo audit
@@ -173,7 +173,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: 🦀 Setup Rust toolchain
-      uses: dtolnay/rust-toolchain@1.82.0
+      uses: dtolnay/rust-toolchain@stable
       with:
         components: llvm-tools-preview
 
@@ -193,7 +193,7 @@ jobs:
 
     - name: 📊 Install cargo-llvm-cov
       run: |
-        cargo install --locked cargo-llvm-cov || cargo install cargo-llvm-cov
+        cargo install --locked cargo-llvm-cov || cargo install cargo-llvm-cov --force
 
     - name: 📊 Generate coverage report
       run: cargo llvm-cov --workspace --lcov --output-path lcov.info

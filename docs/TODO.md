@@ -34,7 +34,7 @@
 
 **Exit 条件**: コアのユニットテストで 200/404/400 が返せる。
 
-## 🌐 Phase 2: hyper アダプタ（ECS/VM）
+## 🌐 Phase 2: hyper アダプタ（任意のサーバー環境向け）
 **目標**: Hyper を使用したHTTPサーバー実装
 
 - [x] HyperAdapter 構造体実装

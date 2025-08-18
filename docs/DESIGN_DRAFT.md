@@ -3,32 +3,32 @@
 **Inspired by Hono as web framework**
 
 > **Tagline:** *Tiny core. Anywhere adapters.*  
-> **Goal:** 同一の `Request → Response` コアを、**Cloudflare Workers** や **ECS/任意コンテナ**など**複数のホスティング先**に薄いアダプタで載せ替えられる、最小限で実用的な Web フレームワーク。
+> **Goal:** 同一の `Request → Response` コアを、**Cloudflare Workers** や **hyper アダプタ（任意のサーバー環境）**など**複数のホスティング先**に薄いアダプタで載せ替えられる、最小限で実用的な Web フレームワーク。
 
 ## 0. コンセプト
 
-- **薄いコア（最小依存）**：`http`/`bytes` を土台に、`Request<Bytes> → Response<Bytes>` の**単一路線**。  
-- **どこでも動く**：配備先ごとに **アダプタ**（hyper / workers-rs / そのほか）を差し替え。  
-- **意図的に最小**：ルーティング／抽出／レスポンス／ミドルウェアを**必要最小限**から段階拡張。  
-- **契約は標準で**：OpenAPI から **型安全クライアントを自動生成**（tRPC 的 BFF は挟まない）。  
-- **“内側”を共通化**：ビジネスロジックは **配備先非依存**のコアで完結。周辺 I/O は `Ctx` 抽象で注入。
+- **Minimal Dependencies**：`http`/`bytes` を土台に、`Request<Bytes> → Response<Bytes>` の**Single Path**。  
+- **Universal Deployment**：配備先ごとに **Adapter**（hyper / workers-rs / そのほか）を差し替え。  
+- **Intentionally Minimal**：ルーティング／抽出／レスポンス／ミドルウェアを**Essential Features Only**から段階拡張。  
+- **Standard Contracts**：OpenAPI から **Type-Safe Client Generation**（tRPC 的 BFF は挟まない）。  
+- **Common Core Logic**：ビジネスロジックは **Platform Agnostic**のコアで完結。周辺 I/O は `Ctx` 抽象で注入。
 
 ## 1. スコープ（MVP）
 
 ### MVPでやること
-- ルーティング（GET/POST、パラメータ、ワイルドカード）
-- 抽出（`Path<T>` / `Query<T>` / `Json<T>`）
-- レスポンス（`IntoResponse`：`Bytes`/`String`/`Json<T>`/`StatusCode`）
-- ミドルウェア（before/after 連鎖の軽量仕組み）
-- エラーモデル（`thiserror` + ステータスマッピング）
-- **アダプタ：** hyper（ECS/VM）／ Cloudflare Workers（`workers-rs`）
+- **Routing**（GET/POST、パラメータ、ワイルドカード）
+- **Extractor**（`Path<T>` / `Query<T>` / `Json<T>`）
+- **Response**（`IntoResponse`：`Bytes`/`String`/`Json<T>`/`StatusCode`）
+- **Middleware**（before/after 連鎖の軽量仕組み）
+- **Error Handling**（`thiserror` + ステータスマッピング）
+- **Adapter**: hyper（任意のサーバー環境向け）／ Cloudflare Workers（`workers-rs`）
 - **OpenAPI 出力（最小）**＋フロント向け TS 型生成
 
 ### MVPでやらないこと（以降のステップで）
 - SSE/ストリーミング、WebSocket
-- tower 互換、圧縮/CORS などの“電池”類
+- tower 互換、圧縮/CORS など
 - WASI-HTTP/Compute@Edge の公式アダプタ
-- 監視（tracing/OTel）、認証
+- 監視（tracing/OTel）・認証
 
 ## 2. アーキテクチャ
 
@@ -36,7 +36,7 @@
 xeno/
   core/             # 配備先非依存の中核
   adapters/
-    hyper/          # tokio + hyper サーバ（ECS/VM向け）
+    hyper/          # tokio + hyper サーバ（任意のサーバー環境向け）
     workers/        # Cloudflare Workers（workers-rs, WASM）
   examples/
     hello-hyper/
@@ -102,7 +102,7 @@ pub struct Ctx {
 ```
 
 - **Workers アダプタ**：env.kv("NAME") を包んだ Kv 実装を注入
-- **ECS アダプタ**：メモリ実装 or Redis など外部サービスを注入
+- **hyper アダプタ**：メモリ実装 or Redis など外部サービスを注入
 
 ## 6. ミドルウェア
 
@@ -125,7 +125,7 @@ pub struct Ctx {
 - **性能**：
   - ボディは最初 Bytes に固定（コピー最小）
   - ルータは matchit、ミドルウェアは最小
-  - ECS は hyper の既定最適化、Workers は Cache API/Keep-Alive を活用（後続ステップ）
+  - hyper 環境は hyper の既定最適化、Workers は Cache API/Keep-Alive を活用（後続ステップ）
 
 ## 9. 非目標（当面やらない）
 
@@ -150,7 +150,7 @@ Exit 条件：cargo test が空でも通る。構成が確定。
 
 Exit 条件：コアのユニットテストで 200/404/400 が返せる。
 
-### Phase 2: hyper アダプタ（ECS/VM）
+### Phase 2: hyper アダプタ（任意のサーバー環境向け）
 - hyper サーバ → Core I/O 変換
 - example: hello-hyper（GET /hello）
 
@@ -186,7 +186,7 @@ Exit 条件：サンプルアプリの増設（users/notes など）＋簡易ド
 ### Phase 7+: 進化的拡張ポイント（順不同で漸進）
 
 - SSE/ストリーミング 抽象（Stream<Item=Bytes> ↔ Workers ReadableStream / hyper Body）
-- WebSocket（Workers WebSocketPair / ECS tokio_tungstenite）
+- WebSocket（Workers WebSocketPair / hyper 環境 tokio_tungstenite）
 - tower 互換レイヤ（オプション）
 - WASI-HTTP / Fastly アダプタ
 - tracing/OTel 連携、ベンチマーク
@@ -228,17 +228,6 @@ pub fn app(ctx: Ctx) -> App<Ctx> {
 - crates：xeno-core, xeno-adapter-hyper, xeno-adapter-workers
 - 型：CoreRequest / CoreResponse / Ctx / App / Handler
 - feature：openapi, sse, ws, tower-compat など
-
-# 15. TODO（MVP着手順）
-
-- Phase 0：ワークスペース雛形を push
-- Phase 1：App/Handler/Router と IntoResponse/Extractors の原型
-- Phase 2：hyper アダプタ + hello-hyper
-- Phase 3：workers アダプタ + hello-workers
-- Phase 4：ミドルウェア最小（ログ/エラー）
-- Phase 5：OpenAPI 出力 & orval で型/クライアント生成（example を動作）
-
-> 以降は Phase 6+ を順次切る（SSE/WS、tower 互換、WASI-HTTP、tracing…）。
 
 ## 採用しない判断（原則）
 

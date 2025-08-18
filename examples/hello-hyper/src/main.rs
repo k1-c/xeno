@@ -1,6 +1,6 @@
-use xeno_adapter_hyper::HyperAdapter;
-use xeno_core::{App, Handler, CoreRequest, CoreResponse, Error, Ctx};
 use async_trait::async_trait;
+use xeno_adapter_hyper::HyperAdapter;
+use xeno_core::{App, CoreRequest, CoreResponse, Ctx, Error, Handler};
 
 struct HelloHandler;
 
@@ -25,15 +25,15 @@ use xeno_core::IntoResponse;
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     let ctx = Ctx::new();
-    
+
     let app = App::new(ctx)
         .get("/", HelloHandler)
         .get("/health", HealthHandler);
-    
+
     let adapter = HyperAdapter::new(app);
-    
+
     println!("Starting server on http://localhost:8080");
     adapter.serve("127.0.0.1:8080").await?;
-    
+
     Ok(())
 }

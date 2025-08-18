@@ -56,7 +56,7 @@ impl<C: Send + Sync + Clone + 'static> MiddlewareStack<C> {
     fn error_to_response(&self, error: Error) -> CoreResponse {
         let status = error.status_code();
         let body = format!("{{\"error\":\"{}\"}}", error);
-        
+
         http::Response::builder()
             .status(status)
             .header("content-type", "application/json; charset=utf-8")

@@ -3,7 +3,7 @@ use serde_json::json;
 fn main() {
     println!("Xeno OpenAPI Generator");
     println!("This tool will generate OpenAPI specifications from Xeno applications");
-    
+
     // Placeholder OpenAPI document
     let openapi_doc = json!({
         "openapi": "3.0.0",
@@ -49,6 +49,6 @@ fn main() {
             }
         }
     });
-    
+
     println!("{}", serde_json::to_string_pretty(&openapi_doc).unwrap());
 }

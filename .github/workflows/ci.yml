@@ -156,7 +156,8 @@ jobs:
       uses: dtolnay/rust-toolchain@stable
 
     - name: 🔍 Install cargo-audit
-      run: cargo install cargo-audit
+      run: |
+        cargo install --locked cargo-audit || cargo install cargo-audit
 
     - name: 🔍 Run security audit
       run: cargo audit
@@ -191,7 +192,8 @@ jobs:
           ${{ runner.os }}-cargo-
 
     - name: 📊 Install cargo-llvm-cov
-      run: cargo install cargo-llvm-cov
+      run: |
+        cargo install --locked cargo-llvm-cov || cargo install cargo-llvm-cov
 
     - name: 📊 Generate coverage report
       run: cargo llvm-cov --workspace --lcov --output-path lcov.info

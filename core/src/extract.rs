@@ -16,7 +16,7 @@ where
 
         let json_value = serde_json::to_value(params)
             .map_err(|e| Error::BadRequest(format!("Failed to convert path params: {}", e)))?;
-        
+
         let extracted = T::deserialize(json_value)
             .map_err(|e| Error::BadRequest(format!("Failed to deserialize path params: {}", e)))?;
 
@@ -31,10 +31,7 @@ where
     T: DeserializeOwned,
 {
     pub fn extract(req: &CoreRequest) -> Result<Self, Error> {
-        let query_str = req
-            .uri()
-            .query()
-            .unwrap_or("");
+        let query_str = req.uri().query().unwrap_or("");
 
         let params: HashMap<String, String> = url::form_urlencoded::parse(query_str.as_bytes())
             .into_owned()
@@ -42,7 +39,7 @@ where
 
         let json_value = serde_json::to_value(params)
             .map_err(|e| Error::BadRequest(format!("Failed to convert query params: {}", e)))?;
-        
+
         let extracted = T::deserialize(json_value)
             .map_err(|e| Error::BadRequest(format!("Failed to deserialize query params: {}", e)))?;
 

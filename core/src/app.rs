@@ -1,4 +1,4 @@
-use crate::{CoreRequest, CoreResponse, Handler, router::Router, Ctx, middleware::MiddlewareStack};
+use crate::{middleware::MiddlewareStack, router::Router, CoreRequest, CoreResponse, Ctx, Handler};
 use http::Method;
 use std::sync::Arc;
 
@@ -20,7 +20,7 @@ impl<C: Send + Sync + Clone + 'static> App<C> {
     pub fn get(self, path: &str, handler: impl Handler<C> + 'static) -> Self {
         let mut router = Arc::try_unwrap(self.router).unwrap_or_else(|arc| (*arc).clone());
         router.add_route(Method::GET, path, Box::new(handler));
-        
+
         Self {
             router: Arc::new(router),
             middleware: self.middleware,
@@ -31,7 +31,7 @@ impl<C: Send + Sync + Clone + 'static> App<C> {
     pub fn post(self, path: &str, handler: impl Handler<C> + 'static) -> Self {
         let mut router = Arc::try_unwrap(self.router).unwrap_or_else(|arc| (*arc).clone());
         router.add_route(Method::POST, path, Box::new(handler));
-        
+
         Self {
             router: Arc::new(router),
             middleware: self.middleware,
@@ -42,7 +42,7 @@ impl<C: Send + Sync + Clone + 'static> App<C> {
     pub fn put(self, path: &str, handler: impl Handler<C> + 'static) -> Self {
         let mut router = Arc::try_unwrap(self.router).unwrap_or_else(|arc| (*arc).clone());
         router.add_route(Method::PUT, path, Box::new(handler));
-        
+
         Self {
             router: Arc::new(router),
             middleware: self.middleware,
@@ -53,7 +53,7 @@ impl<C: Send + Sync + Clone + 'static> App<C> {
     pub fn delete(self, path: &str, handler: impl Handler<C> + 'static) -> Self {
         let mut router = Arc::try_unwrap(self.router).unwrap_or_else(|arc| (*arc).clone());
         router.add_route(Method::DELETE, path, Box::new(handler));
-        
+
         Self {
             router: Arc::new(router),
             middleware: self.middleware,

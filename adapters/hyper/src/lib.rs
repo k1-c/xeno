@@ -1,9 +1,9 @@
 use bytes::Bytes;
+use http_body_util::BodyExt;
 use hyper::body::Incoming;
 use hyper::service::Service;
 use hyper::{Request, Response};
 use hyper_util::rt::TokioIo;
-use http_body_util::BodyExt;
 use std::convert::Infallible;
 use std::future::Future;
 use std::pin::Pin;
@@ -39,11 +39,16 @@ impl<C: Send + Sync + Clone + 'static> HyperAdapter<C> {
         }
     }
 
-    async fn convert_request(req: Request<Incoming>) -> Result<CoreRequest, Box<dyn std::error::Error + Send + Sync>> {
+    async fn convert_request(
+        req: Request<Incoming>,
+    ) -> Result<CoreRequest, Box<dyn std::error::Error + Send + Sync>> {
         let (parts, body) = req.into_parts();
-        let body_bytes = body.collect().await.map(|buf| buf.to_bytes())
+        let body_bytes = body
+            .collect()
+            .await
+            .map(|buf| buf.to_bytes())
             .map_err(|e| Box::new(e) as Box<dyn std::error::Error + Send + Sync>)?;
-        
+
         let core_req = CoreRequest::from_parts(parts, Bytes::from(body_bytes));
         Ok(core_req)
     }

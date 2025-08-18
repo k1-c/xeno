@@ -4,16 +4,16 @@ use http::StatusCode;
 pub enum Error {
     #[error("Not found")]
     NotFound,
-    
+
     #[error("Bad request: {0}")]
     BadRequest(String),
-    
+
     #[error("Internal server error: {0}")]
     Internal(String),
-    
+
     #[error("JSON error: {0}")]
     Json(#[from] serde_json::Error),
-    
+
     #[error("HTTP error: {0}")]
     Http(#[from] http::Error),
 }

@@ -5,7 +5,11 @@ use std::sync::Arc;
 #[async_trait]
 pub trait Kv: Send + Sync {
     async fn get(&self, key: &str) -> Option<Bytes>;
-    async fn put(&self, key: &str, value: Bytes) -> Result<(), Box<dyn std::error::Error + Send + Sync>>;
+    async fn put(
+        &self,
+        key: &str,
+        value: Bytes,
+    ) -> Result<(), Box<dyn std::error::Error + Send + Sync>>;
 }
 
 #[derive(Clone)]

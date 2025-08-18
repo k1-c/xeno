@@ -1,4 +1,4 @@
-# Rustfmt Configuration for Xeno
+# Rustfmt Configuration for Xeno (Stable-compatible)
 # See: https://rust-lang.github.io/rustfmt/
 
 # Basic formatting
@@ -7,35 +7,11 @@ max_width = 100
 hard_tabs = false
 tab_spaces = 4
 
-# Import formatting
-imports_granularity = "Crate"
-group_imports = "StdExternalCrate"
-imports_layout = "Vertical"
-
-# Code style
+# Code style (stable features only)
 newline_style = "Unix"
 remove_nested_parens = true
 use_field_init_shorthand = true
 use_try_shorthand = true
 
-# Control flow
-control_brace_style = "AlwaysSameLine"
-brace_style = "SameLineWhere"
-
-# Functions and structs
-fn_args_layout = "Tall"
-where_single_line = true
-
-# Comments and documentation
-format_code_in_doc_comments = true
-normalize_comments = true
-normalize_doc_attributes = true
-
-# String formatting
-format_strings = true
-
-# Misc
-trailing_comma = "Vertical"
-trailing_semicolon = true
-space_before_colon = false
-space_after_colon = true
+# Functions and structs (stable features only)
+fn_params_layout = "Tall"

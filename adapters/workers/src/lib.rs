@@ -1,6 +1,6 @@
 use bytes::Bytes;
 use std::collections::HashMap;
-use xeno_core::{App, context::Kv};
+use xeno_core::{context::Kv, App};
 
 // Placeholder implementation - will be properly implemented when worker crate is available
 pub struct WorkersAdapter<C> {
@@ -66,7 +66,11 @@ impl Kv for WorkersKv {
         None
     }
 
-    async fn put(&self, _key: &str, _value: Bytes) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+    async fn put(
+        &self,
+        _key: &str,
+        _value: Bytes,
+    ) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         // Placeholder implementation
         // In real implementation, this would be:
         // self.kv_namespace.put(key, value).await

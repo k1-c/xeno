@@ -1,6 +1,6 @@
-use xeno_adapter_workers::{WorkersAdapter, WorkerRequest, WorkerResponse};
-use xeno_core::{App, Handler, CoreRequest, CoreResponse, Error, Ctx, IntoResponse};
 use async_trait::async_trait;
+use xeno_adapter_workers::{WorkerRequest, WorkerResponse, WorkersAdapter};
+use xeno_core::{App, CoreRequest, CoreResponse, Ctx, Error, Handler, IntoResponse};
 
 struct HelloHandler;
 
@@ -23,11 +23,11 @@ impl Handler<Ctx> for HealthHandler {
 // This will be the main entry point for Cloudflare Workers
 pub async fn main(req: WorkerRequest) -> WorkerResponse {
     let ctx = Ctx::new();
-    
+
     let app = App::new(ctx)
         .get("/", HelloHandler)
         .get("/health", HealthHandler);
-    
+
     let adapter = WorkersAdapter::new(app);
     adapter.handle_fetch(req).await
 }

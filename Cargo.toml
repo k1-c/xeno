@@ -1,0 +1,46 @@
+[workspace]
+members = [
+    "core",
+    "adapters/hyper",
+    "adapters/workers",
+    "examples/hello-hyper",
+    "examples/hello-workers",
+    "tools/openapi-gen",
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+authors = ["xeno contributors"]
+repository = "https://github.com/k1-c/xeno"
+
+[workspace.dependencies]
+# Core dependencies
+http = "1.0"
+bytes = "1.5"
+async-trait = "0.1"
+thiserror = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1.0", features = ["full"] }
+
+# Router
+matchit = "0.7"
+
+# Hyper adapter dependencies
+hyper = { version = "1.0", features = ["full"] }
+hyper-util = { version = "0.1", features = ["full"] }
+http-body-util = "0.1"
+
+# Workers adapter dependencies (will be added when implementing)
+# worker = "0.0.18"
+
+# Development dependencies
+reqwest = { version = "0.11", features = ["json"] }
+
+[profile.release]
+lto = true
+codegen-units = 1
+panic = "abort"

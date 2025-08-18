@@ -1,0 +1,17 @@
+[package]
+name = "hello-workers"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+description = "Hello World example using Xeno with Cloudflare Workers"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+xeno-core = { path = "../../core" }
+xeno-adapter-workers = { path = "../../adapters/workers" }
+async-trait.workspace = true
+serde.workspace = true

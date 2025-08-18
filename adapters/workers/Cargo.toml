@@ -1,0 +1,28 @@
+[package]
+name = "xeno-adapter-workers"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+description = "Cloudflare Workers adapter for the Xeno web framework"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+xeno-core = { path = "../../core" }
+http.workspace = true
+bytes.workspace = true
+async-trait.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+
+# Cloudflare Workers dependencies (commented out for now as they require wasm32 target)
+# worker = "0.0.21"
+# console_error_panic_hook = "0.1"
+# wee_alloc = { version = "0.4", optional = true }
+
+[features]
+default = []
+# wee_alloc = ["dep:wee_alloc"]

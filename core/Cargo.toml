@@ -1,0 +1,21 @@
+[package]
+name = "xeno-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+description = "Core components for the Xeno web framework"
+
+[dependencies]
+http.workspace = true
+bytes.workspace = true
+async-trait.workspace = true
+thiserror.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+matchit.workspace = true
+url = "2.4"
+
+[dev-dependencies]
+tokio.workspace = true

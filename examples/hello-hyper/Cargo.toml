@@ -1,0 +1,19 @@
+[package]
+name = "hello-hyper"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+description = "Hello World example using Xeno with Hyper"
+
+[[bin]]
+name = "hello-hyper"
+path = "src/main.rs"
+
+[dependencies]
+xeno-core = { path = "../../core" }
+xeno-adapter-hyper = { path = "../../adapters/hyper" }
+tokio.workspace = true
+async-trait.workspace = true
+serde.workspace = true

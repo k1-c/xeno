@@ -197,7 +197,7 @@ jobs:
       run: cargo llvm-cov --workspace --lcov --output-path lcov.info
 
     - name: 📊 Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v5
       with:
         file: lcov.info
         fail_ci_if_error: false

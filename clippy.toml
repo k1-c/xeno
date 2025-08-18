@@ -1,0 +1,19 @@
+# Clippy Configuration for Xeno
+# See: https://doc.rust-lang.org/clippy/configuration.html
+
+# Complexity limits
+cognitive-complexity-threshold = 30
+type-complexity-threshold = 250
+
+# Documentation
+missing-docs-in-crate-items = true
+
+# Performance
+trivial-copy-size-limit = 128
+
+# Style preferences
+enum-variant-size-threshold = 200
+avoid-breaking-exported-api = true
+
+# Allow certain lints that might be too strict for our use case
+# These can be reviewed and adjusted as the project evolves

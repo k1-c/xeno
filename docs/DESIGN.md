@@ -2,26 +2,28 @@
 
 **Inspired by the Hono web framework architecture**
 
-> **Tagline:** *Tiny core. Universal adapters.*  
-> **Mission:** A minimal yet practical web framework that enables the same `Request → Response` core logic to be deployed across multiple hosting environments through lightweight adapters, including **Cloudflare Workers** and **hyper-based servers**.
+> **Tagline:** *Tiny core. Universal adapters. Web Standards.*  
+> **Mission:** A minimal yet practical web framework built on **Web Standard Request/Response/Fetch API primitives** that enables the same core logic to be deployed across multiple hosting environments through lightweight adapters, including **Cloudflare Workers** and **hyper-based servers**.
 
 ## 0. Design Philosophy & Core Concepts
 
 ### Architectural Principles
 
+- **Web Standards Foundation**: Built on **Web Standard Request/Response/Fetch API primitives**, ensuring compatibility with modern web runtimes and edge computing environments
 - **Minimal Dependencies**: Built on a foundation of `http` and `bytes`, following a unified **Single Path** approach: `Request<Bytes> → Response<Bytes>`
-- **Universal Deployment**: Platform-agnostic core with swappable **adapters** (hyper, workers-rs, and future platforms)
+- **Universal Deployment**: Platform-agnostic core with swappable **adapters** (hyper, workers-rs, and future platforms) that translate between native platform APIs and Web Standard interfaces
 - **Intentionally Minimal**: Progressive enhancement starting from **Essential Features Only** - routing, extraction, responses, and middleware
 - **Standards-Based Contracts**: OpenAPI-driven **type-safe client generation** without intermediate BFF layers (tRPC-style)
 - **Platform-Agnostic Business Logic**: Core application logic remains deployment-independent, with environment-specific I/O abstracted through `Ctx` injection
 
 ### Design Goals
 
-1. **Portability**: Write once, deploy anywhere with adapter swapping
-2. **Performance**: Zero-cost abstractions with minimal runtime overhead
-3. **Type Safety**: Compile-time guarantees throughout the request/response lifecycle
-4. **Developer Experience**: Intuitive APIs with comprehensive tooling support
-5. **Production Ready**: Built-in OpenAPI generation and client SDK generation
+1. **Web Standards Compliance**: Leverage Web Standard Request/Response/Fetch API for maximum compatibility across runtimes
+2. **Portability**: Write once, deploy anywhere with adapter swapping
+3. **Performance**: Zero-cost abstractions with minimal runtime overhead
+4. **Type Safety**: Compile-time guarantees throughout the request/response lifecycle
+5. **Developer Experience**: Intuitive APIs with comprehensive tooling support
+6. **Production Ready**: Built-in OpenAPI generation and client SDK generation
 
 ## 1. Scope Definition & MVP Boundaries
 
@@ -122,12 +124,17 @@ graph TD
 ### Fundamental Types
 
 ```rust
-// Core request/response types
+// Core request/response types - Web Standard compliant
 pub type CoreRequest = http::Request<bytes::Bytes>;
 pub type CoreResponse = http::Response<bytes::Bytes>;
 
 // Result type for error handling
 pub type Result<T> = std::result::Result<T, Error>;
+
+// Web Standard compatibility notes:
+// - Uses http::Request/Response which align with Web API Request/Response
+// - Adapters handle translation between platform-specific and Web Standard types
+// - FetchAPI semantics maintained through adapter implementations
 ```
 
 ### Handler Interface

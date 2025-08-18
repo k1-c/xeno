@@ -49,7 +49,7 @@ impl<C: Send + Sync + Clone + 'static> HyperAdapter<C> {
             .map(|buf| buf.to_bytes())
             .map_err(|e| Box::new(e) as Box<dyn std::error::Error + Send + Sync>)?;
 
-        let core_req = CoreRequest::from_parts(parts, Bytes::from(body_bytes));
+        let core_req = CoreRequest::from_parts(parts, body_bytes);
         Ok(core_req)
     }
 

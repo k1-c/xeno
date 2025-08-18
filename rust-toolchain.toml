@@ -1,5 +1,5 @@
 [toolchain]
 # Minimum Supported Rust Version (MSRV)
-channel = "1.75.0"
+channel = "1.82.0"
 components = ["rustfmt", "clippy"]
 profile = "minimal"

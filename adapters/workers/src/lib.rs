@@ -4,6 +4,7 @@ use xeno_core::{context::Kv, App};
 
 // Placeholder implementation - will be properly implemented when worker crate is available
 pub struct WorkersAdapter<C> {
+    #[allow(dead_code)]
     app: App<C>,
 }
 
@@ -47,6 +48,12 @@ impl WorkerResponse {
 pub struct WorkersKv {
     // This will hold the actual KV namespace binding
     // kv_namespace: worker::kv::KvStore,
+}
+
+impl Default for WorkersKv {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 impl WorkersKv {

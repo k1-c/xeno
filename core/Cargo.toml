@@ -15,7 +15,7 @@ thiserror.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 matchit.workspace = true
-url = "2.4"
+url = "2.5"
 
 [dev-dependencies]
 tokio.workspace = true

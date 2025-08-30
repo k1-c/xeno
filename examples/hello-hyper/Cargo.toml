@@ -17,3 +17,4 @@ xeno-adapter-hyper = { path = "../../adapters/hyper" }
 tokio.workspace = true
 async-trait.workspace = true
 serde.workspace = true
+http.workspace = true

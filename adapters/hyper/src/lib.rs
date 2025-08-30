@@ -18,7 +18,7 @@ pub struct HyperAdapter<C> {
 
 impl<C: Send + Sync + Clone + 'static> HyperAdapter<C> {
     pub fn new(app: App<C>) -> Self {
-        Self { 
+        Self {
             app,
             max_body_size: DEFAULT_MAX_BODY_SIZE,
         }
@@ -55,7 +55,7 @@ impl<C: Send + Sync + Clone + 'static> HyperAdapter<C> {
         max_body_size: usize,
     ) -> Result<CoreRequest, Error> {
         let (parts, body) = req.into_parts();
-        
+
         let content_length = parts
             .headers
             .get("content-length")
@@ -90,13 +90,13 @@ impl<C: Send + Sync + Clone + 'static> HyperAdapter<C> {
 
     fn error_to_response(error: Error) -> Response<String> {
         let status = error.status_code();
-        
+
         #[cfg(debug_assertions)]
         let message = error.debug_message();
-        
+
         #[cfg(not(debug_assertions))]
         let message = error.safe_message().to_string();
-        
+
         let body = serde_json::json!({
             "error": message,
             "status": status.as_u16(),

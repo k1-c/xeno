@@ -30,13 +30,16 @@ impl Handler<Ctx> for UserHandler {
             .extensions()
             .get::<HashMap<String, String>>()
             .ok_or_else(|| Error::bad_request("Missing path parameters"))?;
-        
+
         let user_id = params
             .get("id")
             .ok_or_else(|| Error::bad_request("Missing user ID"))?;
-        
-        let response_body = format!(r#"{{"user_id": "{}", "name": "User {}", "status": "active"}}"#, user_id, user_id);
-        
+
+        let response_body = format!(
+            r#"{{"user_id": "{}", "name": "User {}", "status": "active"}}"#,
+            user_id, user_id
+        );
+
         Ok(http::Response::builder()
             .status(200)
             .header("content-type", "application/json; charset=utf-8")

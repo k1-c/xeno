@@ -46,11 +46,11 @@ mod tests {
                 .extensions()
                 .get::<HashMap<String, String>>()
                 .ok_or_else(|| Error::bad_request("Missing path parameters"))?;
-            
+
             let id = params
                 .get("id")
                 .ok_or_else(|| Error::bad_request("Missing id parameter"))?;
-            
+
             let response_body = format!(r#"{{"id": "{}"}}"#, id);
             Ok(http::Response::builder()
                 .status(200)
@@ -72,8 +72,12 @@ mod tests {
     #[tokio::test]
     async fn test_app_get_200_response() {
         let ctx = Ctx::new();
-        let app = App::new(ctx)
-            .get("/hello", TestHandler { response: "Hello, World!" });
+        let app = App::new(ctx).get(
+            "/hello",
+            TestHandler {
+                response: "Hello, World!",
+            },
+        );
 
         let req = http::Request::builder()
             .method(Method::GET)
@@ -83,7 +87,7 @@ mod tests {
 
         let response = app.handle(req).await;
         assert_eq!(response.status(), StatusCode::OK);
-        
+
         let body = String::from_utf8_lossy(response.body());
         assert_eq!(body, "Hello, World!");
     }
@@ -91,8 +95,12 @@ mod tests {
     #[tokio::test]
     async fn test_app_404_response() {
         let ctx = Ctx::new();
-        let app = App::new(ctx)
-            .get("/hello", TestHandler { response: "Hello, World!" });
+        let app = App::new(ctx).get(
+            "/hello",
+            TestHandler {
+                response: "Hello, World!",
+            },
+        );
 
         let req = http::Request::builder()
             .method(Method::GET)
@@ -102,7 +110,7 @@ mod tests {
 
         let response = app.handle(req).await;
         assert_eq!(response.status(), StatusCode::NOT_FOUND);
-        
+
         let body = String::from_utf8_lossy(response.body());
         assert!(body.contains("Not Found"));
     }
@@ -110,8 +118,7 @@ mod tests {
     #[tokio::test]
     async fn test_app_400_response() {
         let ctx = Ctx::new();
-        let app = App::new(ctx)
-            .get("/error", ErrorTestHandler);
+        let app = App::new(ctx).get("/error", ErrorTestHandler);
 
         let req = http::Request::builder()
             .method(Method::GET)
@@ -121,7 +128,7 @@ mod tests {
 
         let response = app.handle(req).await;
         assert_eq!(response.status(), StatusCode::BAD_REQUEST);
-        
+
         let body = String::from_utf8_lossy(response.body());
         assert!(body.contains("error"));
     }
@@ -129,8 +136,7 @@ mod tests {
     #[tokio::test]
     async fn test_path_parameters() {
         let ctx = Ctx::new();
-        let app = App::new(ctx)
-            .get("/users/:id", PathTestHandler);
+        let app = App::new(ctx).get("/users/:id", PathTestHandler);
 
         let req = http::Request::builder()
             .method(Method::GET)
@@ -140,7 +146,7 @@ mod tests {
 
         let response = app.handle(req).await;
         assert_eq!(response.status(), StatusCode::OK);
-        
+
         let body = String::from_utf8_lossy(response.body());
         assert!(body.contains(r#""id": "123""#));
     }
@@ -157,7 +163,12 @@ mod tests {
             (Method::GET, "/hello", StatusCode::OK, "Hello"),
             (Method::GET, "/world", StatusCode::OK, "World"),
             (Method::POST, "/data", StatusCode::OK, "Posted"),
-            (Method::GET, "/nonexistent", StatusCode::NOT_FOUND, "Not Found"),
+            (
+                Method::GET,
+                "/nonexistent",
+                StatusCode::NOT_FOUND,
+                "Not Found",
+            ),
         ];
 
         for (method, path, expected_status, expected_content) in test_cases {
@@ -169,7 +180,7 @@ mod tests {
 
             let response = app.handle(req).await;
             assert_eq!(response.status(), expected_status);
-            
+
             let body = String::from_utf8_lossy(response.body());
             assert!(body.contains(expected_content));
         }
@@ -178,8 +189,7 @@ mod tests {
     #[tokio::test]
     async fn test_error_handling() {
         let ctx = Ctx::new();
-        let app = App::new(ctx)
-            .get("/internal", TestHandler { response: "OK" });
+        let app = App::new(ctx).get("/internal", TestHandler { response: "OK" });
 
         // Test internal errors through router
         let req = http::Request::builder()

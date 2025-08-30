@@ -65,7 +65,10 @@ impl<C: Send + Sync + Clone + 'static> Router<C> {
         };
 
         match match_result {
-            Ok(Match { value: handler, params }) => {
+            Ok(Match {
+                value: handler,
+                params,
+            }) => {
                 let params_map: HashMap<String, String> = params
                     .iter()
                     .map(|(key, value)| (key.to_string(), value.to_string()))
@@ -83,13 +86,13 @@ impl<C: Send + Sync + Clone + 'static> Router<C> {
 
     fn error_to_response(&self, error: Error) -> CoreResponse {
         let status = error.status_code();
-        
+
         #[cfg(debug_assertions)]
         let message = error.debug_message();
-        
+
         #[cfg(not(debug_assertions))]
         let message = error.safe_message().to_string();
-        
+
         let body = serde_json::json!({
             "error": message,
             "status": status.as_u16(),

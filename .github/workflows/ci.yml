@@ -21,7 +21,7 @@ jobs:
     
     steps:
     - name: 📥 Checkout code
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
 
     - name: 🦀 Setup Rust toolchain
       uses: dtolnay/rust-toolchain@master
@@ -59,7 +59,7 @@ jobs:
     
     steps:
     - name: 📥 Checkout code
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
 
     - name: 🦀 Setup Rust toolchain
       uses: dtolnay/rust-toolchain@stable
@@ -76,7 +76,7 @@ jobs:
     
     steps:
     - name: 📥 Checkout code
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
 
     - name: 🦀 Setup Rust toolchain
       uses: dtolnay/rust-toolchain@stable
@@ -110,7 +110,7 @@ jobs:
     
     steps:
     - name: 📥 Checkout code
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
 
     - name: 🦀 Setup Rust toolchain
       uses: dtolnay/rust-toolchain@stable
@@ -150,7 +150,7 @@ jobs:
     
     steps:
     - name: 📥 Checkout code
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
 
     - name: 🦀 Setup Rust toolchain
       uses: dtolnay/rust-toolchain@stable
@@ -170,7 +170,7 @@ jobs:
     
     steps:
     - name: 📥 Checkout code
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
 
     - name: 🦀 Setup Rust toolchain
       uses: dtolnay/rust-toolchain@stable

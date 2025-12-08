@@ -18,7 +18,7 @@ repository = "https://github.com/k1-c/xeno"
 
 [workspace.dependencies]
 # Core dependencies
-http = "1.0"
+http = "1.4"
 bytes = "1.5"
 async-trait = "0.1"
 thiserror = "1.0"

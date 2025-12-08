@@ -17,7 +17,7 @@ hyper-util.workspace = true
 http-body-util.workspace = true
 serde_json.workspace = true
 chrono = { version = "0.4", features = ["serde"] }
-uuid = { version = "1.18", features = ["v4", "serde"] }
+uuid = { version = "1.19", features = ["v4", "serde"] }
 
 [dev-dependencies]
 reqwest.workspace = true

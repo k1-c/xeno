@@ -27,7 +27,7 @@ serde_json = "1.0"
 tokio = { version = "1.0", features = ["full"] }
 
 # Router
-matchit = "0.7"
+matchit = "0.9"
 
 # Hyper adapter dependencies
 hyper = { version = "1.0", features = ["full"] }
